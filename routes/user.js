@@ -6,6 +6,9 @@ const User = require("../models/user");
 const catchAsync = require("../utils/catchAsync");
 
 router.get("/register", (req, res) => {
+  if (req.isAuthenticated()) {
+    return res.redirect("/campgrounds");
+  }
   res.render("users/register");
 });
 
@@ -29,6 +32,9 @@ router.post(
 );
 
 router.get("/login", (req, res) => {
+  if (req.isAuthenticated()) {
+    return res.redirect("/campgrounds");
+  }
   res.render("users/login");
 });
 
