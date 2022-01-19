@@ -48,14 +48,6 @@ const sessionConfig = {
 };
 app.use(session(sessionConfig));
 
-// using flash service
-app.use(flash());
-app.use((req, res, next) => {
-  res.locals.success = req.flash("success");
-  res.locals.error = req.flash("error");
-  next();
-});
-
 // using passport services
 app.use(passport.initialize());
 app.use(passport.session());
@@ -63,6 +55,18 @@ passport.use(new LocalStrategy(User.authenticate()));
 
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
+
+// using flash service
+app.use(flash());
+app.use((req, res, next) => {
+  if (!["/login", "/"].includes(req.originalUrl)) {
+    req.session.returnTo = req.originalUrl;
+  }
+  res.locals.currentUser = req.user;
+  res.locals.success = req.flash("success");
+  res.locals.error = req.flash("error");
+  next();
+});
 
 // using routers
 app.use("/", userRoutes);
