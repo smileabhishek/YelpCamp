@@ -1,5 +1,8 @@
+// Joi schema, validates the data coming from user
 const { campgroundSchema, reviewSchema } = require("./schemas");
+// user-defined error handler
 const ExpressError = require("./utils/ExpressError");
+// Mongoose schemas
 const Campground = require("./models/campground");
 const Review = require("./models/review");
 
